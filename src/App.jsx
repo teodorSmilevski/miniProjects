@@ -1,9 +1,11 @@
 import "./App.css";
-import ProjectManagement from "./projects/ProjectManagement";
+import QuizzApp from "./projects/QuizzApp";
+// import ProjectManagement from "./projects/ProjectManagement";
 function App() {
   return (
     <>
-      <ProjectManagement />
+      {/* <ProjectManagement /> */}
+      <QuizzApp />
     </>
   );
 }
