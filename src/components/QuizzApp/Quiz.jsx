@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import QUESTIONS from "./questions";
 import quizComplete from "../../assets/quiz-complete.png";
+import QuestionTimer from "./QuestionTimer";
 export default function Quiz() {
   const [userAnswers, setUserAnswers] = useState([]);
 
@@ -8,13 +9,18 @@ export default function Quiz() {
 
   const isQuizOver = userAnswers.length === QUESTIONS.length;
 
-  function handleSelectAnswer(selectedAnswer) {
+  const handleSelectAnswer = useCallback(function handleSelectAnswer(
+    selectedAnswer
+  ) {
     setUserAnswers((prevAnswers) => {
       return [...prevAnswers, selectedAnswer];
     });
-    console.log(userAnswers, selectedAnswer);
-  }
-
+  },
+  []);
+  const handleSkipQuestion = useCallback(
+    () => handleSelectAnswer(null),
+    [handleSelectAnswer]
+  );
   if (isQuizOver) {
     return (
       <div className="mt-10 py-7 bg-violet-600 w-[35rem] flex flex-col items-center gap-3 rounded-3xl bg-opacity-50 shadow-2xl">
@@ -33,7 +39,7 @@ export default function Quiz() {
   shuffledAnswers.sort(() => Math.random() - 0.5);
   return (
     <div className="mt-10 p-10 rounded-xl bg-violet-500 bg-opacity-40 shadow-2xl min-w-[45rem] min-h-[20rem] text-center min-w-15">
-      {/* NOTE: IDEA - switch between questions / if answered right save question and answer / if not end game */}
+      <QuestionTimer timeout={5000} onTimeout={handleSkipQuestion} />
       <p className="text-xl text-violet-50 font-semibold pb-4">
         {QUESTIONS[currentQuestionIndex].text}
       </p>
